@@ -90,7 +90,7 @@ public class ProductosDal {
                 + "pro_minimo,\n"
                 + "pro_maximo,\n"
                 + "pro_ubicacion\n"
-                + " from almacen.productos\n"
+                + " from productos\n"
                 + "where pro_id = '" + codigo + "' ";
         try {
             conexion = cnn.Conexion();
@@ -156,7 +156,7 @@ public class ProductosDal {
                 + "pro_minimo,\n"
                 + "pro_maximo,\n"
                 + "pro_ubicacion\n"
-                + " from almacen.productos\n"
+                + " from productos\n"
                 + " order by  pro_id asc";
 
         try {
@@ -208,7 +208,7 @@ public class ProductosDal {
         Statement st = null;
         ResultSet rs = null;
 
-        String sql = "INSERT INTO Almacen.productos"
+        String sql = "INSERT INTO productos"
                 + "(pro_id,\n"
                 + "pro_descripcion,\n"
                 + "pro_tipo,\n"
@@ -290,7 +290,7 @@ public class ProductosDal {
             System.out.println("Actualizar " + tipo_servicio);
             st = conexion.createStatement();
 
-            st.executeUpdate("update Almacen.productos"
+            st.executeUpdate("update productos"
                     + " set pro_descripcion = '" + descripcion + "'"
                     + ",pro_tipo = '" + tipo + "'"
                     + ",pro_tipo_servicio = '" + tipo_servicio + "'"
@@ -339,7 +339,7 @@ public class ProductosDal {
             System.out.println("Eliminar " + codigo);
             st = conexion.createStatement();
 
-            st.executeUpdate("delete Almacen.productos where pro_id = " + codigo + " ");
+            st.executeUpdate("delete productos where pro_id = " + codigo + " ");
             Clients.showNotification("REGISTRO ELIMINADO <br/> CON EXITO  <br/>");
             System.out.println("Eliminacion Exitosa.! ");
             st.close();

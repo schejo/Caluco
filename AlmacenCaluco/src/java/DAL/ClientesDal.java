@@ -82,7 +82,7 @@ public class ClientesDal {
         int resp = 0;
         cliMd = new ClientesMd();
         String query1 = " SELECT max(CL_ID)+1 as id FROM cliente; ";
-        String sql = " INSERT INTO almacen.cliente (CL_ID, CL_NOMBRE, CL_NIT, CL_DIRECCION, CL_TELEFONO, CL_FECHA_ALTA, CL_USUARIO_ALTA, CL_CORREO)\n"
+        String sql = " INSERT INTO cliente (CL_ID, CL_NOMBRE, CL_NIT, CL_DIRECCION, CL_TELEFONO, CL_FECHA_ALTA, CL_USUARIO_ALTA, CL_CORREO)\n"
                 + "VALUES (?,?,?,?,?,NOW(),?,?);";
 
         try {

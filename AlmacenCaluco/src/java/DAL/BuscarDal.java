@@ -39,7 +39,7 @@ public class BuscarDal {
                 + "                when 'T' then 'TALLER' \n"
                 + "                END AS UBICACION,\n"
                 + "                pro_stock\n"
-                + "		 from almacen.productos";
+                + "		 from productos";
 
         try {
             conexion = cnn.Conexion();

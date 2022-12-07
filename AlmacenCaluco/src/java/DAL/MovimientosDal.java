@@ -31,7 +31,7 @@ public class MovimientosDal {
                 + " trim(mov_usuario,)"
                 + " trim(mov_vendedor,)"
                 + " trim(mov_cantidad)"
-                + " from almacen.mov_productos where mov_pro_codigo = '" + codigo + "' ";
+                + " from mov_productos where mov_pro_codigo = '" + codigo + "' ";
         try {
             conexion = cnn.Conexion();
             st = conexion.createStatement();
@@ -74,7 +74,7 @@ public class MovimientosDal {
                 + " trim(mov_usuario),"
                 + " trim(mov_vendedor),"
                 + " trim(mov_cantidad)"
-                + " from almacen.mov_productos order by  mov_pro_codigo asc";
+                + " from mov_productos order by  mov_pro_codigo asc";
 
         try {
             conexion = cnn.Conexion();
@@ -112,7 +112,7 @@ public class MovimientosDal {
             String cantidad) throws SQLException, ClassNotFoundException {
         Statement st = null;
         ResultSet rs = null;
-        String sql = "insert into almacen.mov_productos"
+        String sql = "insert into mov_productos"
                 + "(mov_pro_codigo,"
                 + " mov_correlativo,"
                 + " mov_precio_unitario,"
@@ -170,7 +170,7 @@ public class MovimientosDal {
             System.out.println("Actualizar " + codigo);
             st = conexion.createStatement();
 
-            st.executeUpdate("update almacen.mov_productos set "
+            st.executeUpdate("update mov_productos set "
                     + ",mov_correlativo = '" + correlativo + "'"
                     + ",mov_precio_unitario = '" + precio + "'"
                     + ",mov_fecha_ingreso = STR_TO_DATE('" + ingreso + "','%d/%m/%Y') "
@@ -207,7 +207,7 @@ public class MovimientosDal {
             System.out.println("Eliminar " + codigo);
             st = conexion.createStatement();
 
-            st.executeUpdate("delete almacen.mov_productos where mov_pro_codigo = '" + codigo + "' ");
+            st.executeUpdate("delete mov_productos where mov_pro_codigo = '" + codigo + "' ");
             Clients.showNotification("REGISTRO ELIMINADO <br/> CON EXITO  <br/>");
             System.out.println("Eliminacion Exitosa.! ");
             st.close();
@@ -238,7 +238,7 @@ public class MovimientosDal {
             System.out.println("Actualizar " + codigo);
             st = conexion.createStatement();
 
-            st.executeUpdate("update almacen.productos "
+            st.executeUpdate("update productos "
                     + "set pro_stock = pro_stock +" + valor + " ,"
                     + " pro_precio_venta = +" + precios + " "
                     + " where pro_id = '" + codigo + "'  ");
@@ -263,7 +263,7 @@ public class MovimientosDal {
     public String Correlativo(String codigo) throws ClassNotFoundException, SQLException {
         Statement st = null;
         ResultSet rs = null;
-        String query = "select count(mov_correlativo)+1 as correlativo from almacen.mov_productos where mov_pro_codigo='" + codigo + "' ";
+        String query = "select count(mov_correlativo)+1 as correlativo from mov_productos where mov_pro_codigo='" + codigo + "' ";
         String resp = "";
         try {
             conexion = cnn.Conexion();

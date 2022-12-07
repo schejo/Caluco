@@ -38,7 +38,7 @@ public class ProductosNuevoDal {
         ResultSet rs = null;//copie de usuarios
         List<ProductosNuevoMd> allProductos = new ArrayList<ProductosNuevoMd>();
         String query = "select  pro_id\n"
-                + " from almacen.productos\n"
+                + " from productos\n"
                 + " order by  pro_id asc";
 
         try {
@@ -229,7 +229,7 @@ public class ProductosNuevoDal {
         cl = new ProductosNuevoMd();
         String query0 = "SELECT pro_descripcion,pro_tipo,pro_tipo_servicio,pro_marca,pro_presentacion,pro_precio_venta,\n"
                 + "pro_descuento,pro_stock,pro_conversion,pro_medida,pro_minimo,pro_maximo,pro_ubicacion\n"
-                + "from  almacen.productos\n"
+                + "from  productos\n"
                 + " where pro_id='" + producto + "';";
         try {
             conn = obtener.Conexion();

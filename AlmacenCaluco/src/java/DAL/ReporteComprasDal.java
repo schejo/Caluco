@@ -50,8 +50,8 @@ public class ReporteComprasDal {
         String query = " select a.pro_descripcion,b.mov_precio_unitario, \n"
                 + "             b.mov_cantidad,\n"
                 + "            (b.mov_precio_unitario * b.mov_cantidad)as TOTAL\n"
-                + "     from   almacen.productos a,\n"
-                + "            almacen.mov_productos b\n"
+                + "     from   productos a,\n"
+                + "            mov_productos b\n"
                 + "     where  a.pro_id = b. mov_pro_codigo\n"
                 + "      and   b.mov_fecha_ingreso >= '" + dateInString + "'\n "
                 + "      and   b.mov_fecha_ingreso <=  '" + dateInString2 + "'";
@@ -60,8 +60,8 @@ public class ReporteComprasDal {
                 + "         SUM( b.mov_precio_unitario) as PRECIO,\n"
                 + "	     SUM(a.pro_stock) as CANTIDAD,\n"
                 + "          SUM(b.mov_cantidad) as TOTAL\n"//b.mov_saldo
-                + "     from almacen.productos a,\n"
-                + "          almacen.mov_productos b ";
+                + "     from productos a,\n"
+                + "          mov_productos b ";
 
         try {
             conexion = cnn.Conexion();
