@@ -79,7 +79,7 @@
                         </div>
                         <div sclass="col-md-6">
                             <label value="NOMBRE " style="font-size:18px; font-weight:bold;"  />
-                            <textbox   id="txtClienteNombre"  width="100%" value="" readonly="true" style="font-size:16px;"   maxlength="900"/>
+                            <textbox   id="txtClienteNombre"  width="100%" value=""  style="font-size:16px;"   maxlength="900"/>
                      
                         </div>
                         <div sclass="col-md-2">
@@ -148,7 +148,10 @@
                         <div sclass="col-md-2">
                             <label value="CODIGO " style="font-size:18px; font-weight:bold;"  />
                             <textbox   id="txtProductoId"   width="100%" value="" readonly="false" style="font-size:16px;"  maxlength="900"/>
-                     
+                       <span class="input-group-btn">
+                                <button id="btnBusca1" class="btn btn-primary" type="button" iconSclass="z-icon-search" > 
+                                </button>
+                            </span>
                         </div>
                         <div sclass="col-md-2">
                             <label value="TIPO " style="font-size:18px; font-weight:bold;"  />

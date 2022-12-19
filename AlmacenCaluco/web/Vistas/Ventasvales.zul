@@ -26,14 +26,14 @@
                         </div>
                         <div sclass="col-md-3">
                             <label value="VENDEDOR " style="font-size:18px; font-weight:bold;"  />
-                            <textbox   id="txtEmpleadoNombre"  width="100%" value="" readonly="true" style="font-size:16px;" maxlength="900"/>
+                            <textbox   id="txtEmpleadoNombre"  width="100%" value=""  style="font-size:16px;" maxlength="900"/>
                      
                         </div>
-                                <div sclass="col-md-2">
-                                    <label value="USUARIO " style="font-size:18px; font-weight:bold;"  />  
-                                    <textbox   id="txtEmpleadoUsuario"  width="50%" value="" readonly="true" style="font-size:16px;" maxlength="900"/>
+                        <div sclass="col-md-2">
+                            <label value="USUARIO " style="font-size:18px; font-weight:bold;"  />  
+                            <textbox   id="txtEmpleadoUsuario"  width="50%" value="" readonly="true" style="font-size:16px;" maxlength="900"/>
                                     
-                                </div>  
+                        </div>  
                         <div sclass="col-md-2">
                             <label value="ESTADO " style="font-size:18px; font-weight:bold;" />
                             <textbox    id="txtFacturaEstado"   value=""   readonly="true" width="100%"  style="font-size:16px;" maxlength="900"/>
@@ -142,7 +142,10 @@
                         <div sclass="col-md-2">
                             <label value="CODIGO " style="font-size:18px; font-weight:bold;"  />
                             <textbox   id="txtProductoId"   width="100%" value="" readonly="false" style="font-size:16px;"  maxlength="900"/>
-                     
+                            <span class="input-group-btn">
+                                <button id="btnBusca1" class="btn btn-primary" type="button" iconSclass="z-icon-search" > 
+                                </button>
+                            </span>
                         </div>
                         <div sclass="col-md-2">
                             <label value="TIPO " style="font-size:18px; font-weight:bold;"  />
@@ -158,8 +161,8 @@
                  
                     
                     </div>
-                     <n:br/>
-                     <div sclass="row" >
+                    <n:br/>
+                    <div sclass="row" >
                        
                         <div sclass="col-md-3">
                             <label value="PRECIO UNIDAD " style="font-size:18px; font-weight:bold;"/>
@@ -185,12 +188,12 @@
                             
                         </div>
                     
-                     <div sclass="col-md-2">
+                        <div sclass="col-md-2">
                             <n:br/>
                             <button label="Agregar"  width="100%"  iconSclass="z-icon-save" id="btnDetalleAgregar" sclass="btn btn-primary btn-md" />
                         </div>
                     </div>
-                     <n:br/>
+                    <n:br/>
                          
                     <div sclass="row" >
                         <div sclass="col-md-12 text-center">
@@ -199,31 +202,31 @@
                     </div>
                     <n:br/>
                     <grid sclass="domain"  mold="paging"  pageSize="100"  id="dataGrid" emptyMessage="No Hay Productos Agregados">
-                <columns>
-                    <column label="NO."  sort="auto"  width ="5%"/>
-                    <column label="CODIGO"  sort="auto"  width ="7%"/>
-                    <column label="PRODUCTO"  sort="auto"  width ="40%"/>
-                    <column label="STOCK"  sort="auto"  width ="6%"/>
-                    <column label="CANTIDAD"  sort="auto"  width ="10%"/>
-                    <column label="PRECIO UNIDAD"   sort="auto" width ="10%" />
-                    <column label="DESCUENTO"   sort="auto"  width ="10%"/>
-                    <column label="IMPORTE"  sort="auto"  width ="10%"/>
-                    <column label="ELIMINAR"  sort="auto"  width ="7%"/>
-                </columns>
-                <rows id="rows">
-                </rows>
-            </grid>
-            <n:br/>
+                        <columns>
+                            <column label="NO."  sort="auto"  width ="5%"/>
+                            <column label="CODIGO"  sort="auto"  width ="7%"/>
+                            <column label="PRODUCTO"  sort="auto"  width ="40%"/>
+                            <column label="STOCK"  sort="auto"  width ="6%"/>
+                            <column label="CANTIDAD"  sort="auto"  width ="10%"/>
+                            <column label="PRECIO UNIDAD"   sort="auto" width ="10%" />
+                            <column label="DESCUENTO"   sort="auto"  width ="10%"/>
+                            <column label="IMPORTE"  sort="auto"  width ="10%"/>
+                            <column label="ELIMINAR"  sort="auto"  width ="7%"/>
+                        </columns>
+                        <rows id="rows">
+                        </rows>
+                    </grid>
+                    <n:br/>
                     <n:br/>
                     
-            <div sclass="row" >
+                    <div sclass="row" >
                        
                         <div sclass="col-md-2">
                             <label value="SUBTOTAL " style="font-size:18px; font-weight:bold;"/>
                              
                         </div>
                         <div sclass="col-md-2">
-                             <textbox    id="txtSubtotal"   value="" readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
+                            <textbox    id="txtSubtotal"   value="" readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
                             
                         </div>
                         <div sclass="col-md-2">
@@ -232,7 +235,7 @@
                         </div>
                         
                         <div sclass="col-md-2">
-                             <textbox    id="txtDescuentos"   value="" readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
+                            <textbox    id="txtDescuentos"   value="" readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
                             
                         </div>
                         
@@ -242,54 +245,54 @@
                              
                         </div>
                         <div sclass="col-md-2">
-                             <textbox    id="txtTotal"   value="" readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
+                            <textbox    id="txtTotal"   value="" readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
                             
                         </div>
                         
                          
                     </div>
             
-            <n:br/>
+                    <n:br/>
                     <n:br/>
                     
-            <div sclass="row" >
+                    <div sclass="row" >
                        
-                         <div sclass="col-md-3">
+                        <div sclass="col-md-3">
                             <label value="EFECTIVO " style="font-size:18px; font-weight:bold;"/>
-                             <doublebox    id="txtEfectivo"    readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
+                            <doublebox    id="txtEfectivo"    readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
                             
                         </div>
                          
                         <div sclass="col-md-3">
                             <label value="TARJETA DEB/CRE " style="font-size:18px; font-weight:bold;"/>
-                             <doublebox    id="txtTarjeta"   readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
+                            <doublebox    id="txtTarjeta"   readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
                             
                         </div>
                         <div sclass="col-md-3">
                             <label value="REFERENCIA" style="font-size:18px; font-weight:bold;"/>
-                             <textbox    id="txtReferencia"   value="" readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
+                            <textbox    id="txtReferencia"   value="" readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
                             
                         </div>
                         
                         <div sclass="col-md-3">
                             <label value="CREDITO" style="font-size:18px; font-weight:bold;"/>
-                              <doublebox    id="txtCredito"    readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
+                            <doublebox    id="txtCredito"    readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
                         </div>
                     </div>
                     <n:br/>
                     <n:br/>
-            <div sclass="row" >
+                    <div sclass="row" >
                         <div sclass="col-md-3">
                             <label value="EFECTIVO RECIBIDO" style="font-size:18px; font-weight:bold;"/>
                         </div>
                         <div sclass="col-md-3">
-                               <doublebox    id="txtRecibido"    readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
+                            <doublebox    id="txtRecibido"    readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
                         </div>
                         <div sclass="col-md-3">
                             <label value="TOTAL CAMBIO" style="font-size:18px; font-weight:bold; color:red;"/>
                         </div>
                         <div sclass="col-md-3">
-                               <doublebox    id="txtCambio"   readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
+                            <doublebox    id="txtCambio"   readonly="true" style="font-size:16px;" width="100%"  maxlength="900"/>
                         </div>
                     </div>
             

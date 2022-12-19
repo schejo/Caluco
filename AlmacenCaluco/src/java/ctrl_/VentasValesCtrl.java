@@ -1,10 +1,12 @@
 package ctrl_;
 
 import Conexion.*;
+import DAL.CatalogoDal;
 import DAL.ClientesDal;
 import DAL.ProductosDal;
 import DAL.UsuarioDal;
 import DAL.VentasValesDal;
+import MD.CatalogosMd;
 import MD.ClientesMd;
 import MD.DetalleFacturaMd;
 import MD.FacturaMd;
@@ -116,6 +118,8 @@ import Utilitarios.*;
 import java.io.FileOutputStream;
 import java.util.Calendar;
 import org.zkoss.util.media.AMedia;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Window;
 
@@ -127,7 +131,7 @@ public class VentasValesCtrl extends Commons {
     private static final long serialVersionUID = 1L;
     ClientesDal clientebd = new ClientesDal();
 
-    static List<DetalleFacturaMd> lista = new ArrayList<DetalleFacturaMd>();
+    List<CatalogosMd> lista = new ArrayList<CatalogosMd>();
 
     ClientesDal cliente = new ClientesDal();
 
@@ -150,6 +154,7 @@ public class VentasValesCtrl extends Commons {
     List<ProductosMd> datosP = new ArrayList<ProductosMd>();
 
     UsuarioDal user = new UsuarioDal();
+    CatalogoDal ctd = new CatalogoDal();
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -157,6 +162,26 @@ public class VentasValesCtrl extends Commons {
 //        session.setAttribute("EmpleadoId", "1");
 //        session.setAttribute("EmpleadoUsuario", "JGARCIA");
 //        session.setAttribute("EmpleadoNombre", "JOSE GARCIA");
+      lista = ctd.consulta();
+          EventQueues.lookup("myEventQueue", EventQueues.DESKTOP, true)
+                .subscribe(new EventListener() {
+                    public void onEvent(Event event) throws Exception {
+                        List<CatalogosMd> data = new ArrayList<CatalogosMd>();
+                        data.clear();
+                        data = (List<CatalogosMd>) event.getData();
+                        if (data.isEmpty()) {
+                            txtProductoId.setText("");
+
+                        } else {
+                            for (CatalogosMd item : data) {
+                                  if(data.size()==1){
+                                txtProductoId.setText(item.getCodemp());
+                                 txtProductoId.setFocus(true);
+                                }
+                            }
+                        }
+                    }
+                });
 
         UsuariosMd mod = user.REGselectUsuario(desktop.getSession().getAttribute("USER").toString());
 
@@ -201,6 +226,16 @@ public class VentasValesCtrl extends Commons {
     private Textbox txtClienteDireccion;
     private Textbox txtClienteTelefono;
     private Textbox txtClienteAlta;
+    
+       public void onClick$btnBusca1(Event e) {
+        EventQueues.lookup("myEventQueue", EventQueues.DESKTOP, true)
+                .publish(new Event("onChangeNickname", null, lista));
+
+        //INVOCAR MODAL
+        Window window = (Window) Executions.createComponents(
+                "/Vistas/BuscaPro.zul", null, null);
+        window.doModal();
+    }
 
     public void onChange$txtRecibido(Event evt) {
         Float Cambio = (Float.parseFloat(txtRecibido.getText()) - Float.parseFloat(txtEfectivo.getText()));
@@ -273,6 +308,9 @@ public class VentasValesCtrl extends Commons {
             }
         }
     }
+          public void onOK$txtProductoId(Event evt) throws SQLException {
+         onChange$txtProductoId(evt);
+     }
 
     public void onChange$txtProductoId(Event evt) throws SQLException {
         ProductosDal pro = new ProductosDal();
@@ -691,6 +729,45 @@ public class VentasValesCtrl extends Commons {
     }
 
     File f;
+    public void onClick$btnLimpiar(Event e) {
+        Limpiartodo();
+
+    }
+    
+      private void Limpiartodo() {
+        cbxDetalleBusqueda.setText("");
+        txtProductoId.setText("");
+        txtProductoTipo.setText("");
+        txtProductoDescripcion.setText("");
+        txtProductoPrecio.setText("");
+        txtProductoDescuento.setText("");
+        txtProductoStock.setText("");
+        txtProductoCantidad.setText("");
+        txtClienteNit.setText("");
+
+        txtClienteNit.setText("");
+        txtClienteNombre.setText("");
+        txtClienteId.setText("");
+        txtClienteDireccion.setText("");
+        txtClienteTelefono.setText("");
+        txtClienteAlta.setText("");
+
+        txtSubtotal.setText("");
+        txtDescuentos.setText("");
+        txtTotal.setText("");
+
+        txtReferencia.setText("");
+        txtEfectivo.setText("");
+        txtTarjeta.setText("");
+
+        txtCredito.setText("");
+        txtCambio.setText("");
+        txtRecibido.setText("");
+
+        rows.getChildren().clear();
+
+        datos.removeAll(datos);
+    }
 
     public void PDF(FacturaMd enc/*, java.util.List<DetalleFacturaMd> lista*/) throws SQLException {
         //  String ano_arribo="", num_Arribo="";
@@ -797,7 +874,7 @@ public class VentasValesCtrl extends Commons {
             cell2.setBorder(Rectangle.NO_BORDER);
             table2.addCell(cell2);
 
-            cell2 = new PdfPCell(new Phrase("CLIENTE: " + enc.getFacturaClienteId() + "  " + enc.getFacturaClienteNombre(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 10, Font.BOLD)));
+            cell2 = new PdfPCell(new Phrase("CLIENTE: " + enc.getFacturaClienteId() + "  " + txtClienteNombre.getText(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 10, Font.BOLD)));
             cell2.setColspan(10);
             cell2.setBorder(Rectangle.NO_BORDER);
             table2.addCell(cell2);
