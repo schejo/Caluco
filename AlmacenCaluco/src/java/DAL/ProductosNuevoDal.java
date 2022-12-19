@@ -287,7 +287,7 @@ public class ProductosNuevoDal {
         String id = "";
         int resp = 0;
 
-        String query0 = " SELECT pro_id, concat(pro_descripcion,' Codigo: ',pro_id) FROM productos ";
+        String query0 = " SELECT pro_id, concat(pro_descripcion,' Codigo: ',pro_id) FROM Caluco.productos ";
         try {
             conn = obtener.Conexion();
 
