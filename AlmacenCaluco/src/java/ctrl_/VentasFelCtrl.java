@@ -184,22 +184,7 @@ public class VentasFelCtrl extends GenericForwardComposer {
         allProductos = ProductoDal.allCL();
         cbxDetalleBusqueda.setModel(new ListModelList(allProductos));
 
-        //datosP = pro.BuscarProductos();
-//        cbxDetalleBusqueda.setModel(new ListModelList(datos));
-//        util.cargaCombox("SELECT P.PRO_ID,\n"
-//                + "       CONCAT( IFNULL(P.PRO_DESCRIPCION,' '),\" \", IFNULL(P.PRO_MARCA,' ') ,\" \",IFNULL((CASE P.PRO_PRESENTACION\n"
-//                + "                   WHEN 'U' THEN 'UNIDAD'\n"
-//                + "                    WHEN 'C' THEN 'CAJA'\n"
-//                + "                    WHEN 'B' THEN 'BOLSA'\n"
-//                + "                    WHEN 'L' THEN 'LITRO' ELSE ' ' END),' '),\" \", case \n"
-//                + "  when P.PRO_CONVERSION IS NULL OR P.PRO_CONVERSION = 0 then ' '  \n"
-//                + "  else  CONCAT(\"X \",P.PRO_CONVERSION)\n"
-//                + "end) DESCRIPCION,\n"
-//                + "       P.PRO_TIPO_SERVICIO,\n"
-//                + "       IFNULL(FORMAT(P.PRO_PRECIO_VENTA,2),'-'),\n"
-//                + "       IFNULL(FORMAT(IFNULL(P.PRO_DESCUENTO,0),2),'-'),\n"
-//                + "       IFNULL(P.PRO_STOCK,0)\n"
-//             + "FROM almacen.productos P  ORDER BY P.PRO_DESCRIPCION ASC", cbxDetalleBusqueda);
+       
     }
 
     private Textbox txtClienteNit;
@@ -259,19 +244,32 @@ public class VentasFelCtrl extends GenericForwardComposer {
 //    }
 
     //para mostrar el producto ingresando el codigo
-    public void onChange$txtProductoId(Event e) throws SQLException {
-             ProductosDal pro = new ProductosDal();
-        ProductosMd proMd = pro.BuscarProducto(txtProductoId.getText());
-        
-         cbxDetalleBusqueda.setText(proMd.getCodigo());
-       // txtProductoId.setText(proMd.getCodigo());
-        txtProductoTipo.setText(proMd.getTipo_servicio());
-        txtProductoDescripcion.setText(proMd.getDescripcion());
-        txtProductoPrecio.setText(proMd.getPrecio_venta());
-        txtProductoDescuento.setText(proMd.getDescuento());
-        txtProductoStock.setText(proMd.getStock());
+    public void BuscaItem(String letra, Combobox cb) {
+        for (int i = 0; i < cb.getItemCount(); i++) {
+            if (letra.equals(cb.getItemAtIndex(i).getValue().toString())) {
+                cb.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
 
-           
+    public void onChange$txtProductoId(Event evt) throws SQLException {
+        ProductosDal pro = new ProductosDal();
+        ProductosMd proMd = pro.BuscarProducto(txtProductoId.getText());
+
+        if (proMd != null) {
+            this.BuscaItem(txtProductoId.getText(), cbxDetalleBusqueda);
+
+            txtProductoId.setText(proMd.getCodigo());
+            txtProductoTipo.setText(proMd.getTipo_servicio());
+            txtProductoDescripcion.setText(proMd.getDescripcion());
+            txtProductoPrecio.setText(proMd.getPrecio_venta());
+            txtProductoDescuento.setText(proMd.getDescuento());
+            txtProductoStock.setText(proMd.getStock());
+        }else{
+               Messagebox.show("NO EXISTE PRODUCTO CON EL CODIGO INGRESADO", "Informacion", Messagebox.OK, Messagebox.ERROR);
+        }
+
     }
 
     public void onSelect$cbxDetalleBusqueda(Event evt) throws SQLException {
@@ -438,7 +436,7 @@ public class VentasFelCtrl extends GenericForwardComposer {
 
         if (ven.Crear(enc, datos) > 0) {
             Clients.showNotification("FACTURA CREADA <br/> EXITOSAMENTE <br/>");
-            PDF(ven.BuscarEncabezadoFactura(cbxFacturaSerie.getText()));
+            PDF(ven.BuscarEncabezadoFactura(cbxFacturaSerie.getText(), ""));
         } else {
             Messagebox.show("NO SE CREO FACTURA", "Informacion", Messagebox.OK, Messagebox.ERROR);
         }
@@ -696,7 +694,7 @@ public class VentasFelCtrl extends GenericForwardComposer {
         String buque = "";
         DecimalFormat formato = new DecimalFormat("#.00");
 
-        List<DetalleFacturaMd> lista = ven.BuscaDetallesFactura();
+        List<DetalleFacturaMd> lista = ven.BuscaDetallesFactura("");
 
         try {
             com.itextpdf.text.Document detalle = new com.itextpdf.text.Document(PageSize.LEGAL, 0, 390, 0, 0);

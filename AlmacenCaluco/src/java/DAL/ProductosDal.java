@@ -31,7 +31,7 @@ public class ProductosDal {
         String id = "";
         int resp = 0;
 
-        String query0 = " SELECT pro_id, concat(pro_descripcion,' Codigo: ',pro_id) FROM productos ";
+        String query0 = " SELECT pro_id, concat(pro_descripcion,' Codigo: ',pro_id) FROM Caluco.productos ";
         try {
             conn = obtener.Conexion();
 
@@ -90,7 +90,7 @@ public class ProductosDal {
                 + "pro_minimo,\n"
                 + "pro_maximo,\n"
                 + "pro_ubicacion\n"
-                + " from productos\n"
+                + " from Caluco.productos\n"
                 + "where pro_id = '" + codigo + "' ";
         try {
             conexion = cnn.Conexion();
@@ -156,7 +156,7 @@ public class ProductosDal {
                 + "pro_minimo,\n"
                 + "pro_maximo,\n"
                 + "pro_ubicacion\n"
-                + " from productos\n"
+                + " from Caluco.productos\n"
                 + " order by  pro_id asc";
 
         try {
@@ -208,7 +208,7 @@ public class ProductosDal {
         Statement st = null;
         ResultSet rs = null;
 
-        String sql = "INSERT INTO productos"
+        String sql = "INSERT INTO Caluco.productos"
                 + "(pro_id,\n"
                 + "pro_descripcion,\n"
                 + "pro_tipo,\n"
@@ -227,7 +227,7 @@ public class ProductosDal {
                 + "pro_ubicacion)\n"
                 + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";//now()
         
-        String sql0 = "select max(pro_id)+1 as codigo from productos";
+        String sql0 = "select max(pro_id)+1 as codigo from Caluco.productos";
 
         try {
             conexion = cnn.Conexion();
@@ -290,7 +290,7 @@ public class ProductosDal {
             System.out.println("Actualizar " + tipo_servicio);
             st = conexion.createStatement();
 
-            st.executeUpdate("update productos"
+            st.executeUpdate("update Caluco.productos"
                     + " set pro_descripcion = '" + descripcion + "'"
                     + ",pro_tipo = '" + tipo + "'"
                     + ",pro_tipo_servicio = '" + tipo_servicio + "'"
@@ -339,7 +339,7 @@ public class ProductosDal {
             System.out.println("Eliminar " + codigo);
             st = conexion.createStatement();
 
-            st.executeUpdate("delete productos where pro_id = " + codigo + " ");
+            st.executeUpdate("delete Caluco.productos where pro_id = " + codigo + " ");
             Clients.showNotification("REGISTRO ELIMINADO <br/> CON EXITO  <br/>");
             System.out.println("Eliminacion Exitosa.! ");
             st.close();
@@ -376,7 +376,7 @@ public class ProductosDal {
                 + "       IFNULL(FORMAT(P.PRO_PRECIO_VENTA,2),'-'),\n"
                 + "       IFNULL(FORMAT(IFNULL(P.PRO_DESCUENTO,0),2),'-'),\n"
                 + "       IFNULL(P.PRO_STOCK,0)\n"
-                + "FROM productos P  "
+                + "FROM Caluco.productos P  "
                 + "   where P.PRO_ID = ?";
 
         try {
@@ -426,7 +426,8 @@ public class ProductosDal {
 
         List<ProductosMd> lista = new ArrayList<ProductosMd>();
 
-        String sql = "SELECT P.PRO_ID, TRIM(NVL(P.PRO_DESCRIPCION,' ')||' '|| NVL(P.PRO_MARCA,' ') ||' '|| NVL(P.PRO_PRESENTACION,' ')||' '|| DECODE(P.PRO_CONVERSION,NULL,' ','X '||P.PRO_CONVERSION)) FROM productos P ";
+        String sql = "SELECT P.PRO_ID, TRIM(NVL(P.PRO_DESCRIPCION,' ')||' '|| NVL(P.PRO_MARCA,' ') ||' '|| NVL(P.PRO_PRESENTACION,' ')||' '|| DECODE(P.PRO_CONVERSION,NULL,' ','X '||P.PRO_CONVERSION)) "
+                + "FROM Caluco.productos P ";
 
         try {
             smt = conexion.prepareStatement(sql);
