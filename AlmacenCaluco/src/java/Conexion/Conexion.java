@@ -17,9 +17,9 @@ public class Conexion {
            // cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/almacen?allowPublicKeyRetrieval=true&serverTimezone=UTC&useSSL=false", "root", "root");
             //cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/almacen?allowPublicKeyRetrieval=true&serverTimezone=UTC&useSSL=false", "root", "root");
               //produccion            
-           // cnx = DriverManager.getConnection("jdbc:mysql://base-administrada-do-user-12296041-0.b.db.ondigitalocean.com:25060/Caluco?allowPublicKeyRetrieval=true&serverTimezone=UTC&useSSL=false", "caluco", "AVNS_kJlhVOYsPw7CH6EbELY");
+            cnx = DriverManager.getConnection("jdbc:mysql://base-administrada-do-user-12296041-0.b.db.ondigitalocean.com:25060/Caluco?allowPublicKeyRetrieval=true&serverTimezone=UTC&useSSL=false", "caluco", "AVNS_kJlhVOYsPw7CH6EbELY");
            //pruebas
-                   cnx = DriverManager.getConnection("jdbc:mysql://db-mysql-nyc1-13705-do-user-12423640-0.b.db.ondigitalocean.com:25060/Caluco?allowPublicKeyRetrieval=true&serverTimezone=UTC&useSSL=false", "caluco", "AVNS_HSmsBW3gYs0lkszEsry");
+                  // cnx = DriverManager.getConnection("jdbc:mysql://db-mysql-nyc1-13705-do-user-12423640-0.b.db.ondigitalocean.com:25060/Caluco?allowPublicKeyRetrieval=true&serverTimezone=UTC&useSSL=false", "caluco", "AVNS_HSmsBW3gYs0lkszEsry");
 
             
             System.out.println("Conexion Exitosa a Base de Datos...!");
