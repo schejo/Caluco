@@ -154,5 +154,9 @@ public class menu extends GenericForwardComposer {
         Clients.showNotification("BIENVENIDO AL SISTEMA DE INVENTARIO Y FACTURACION <br/>" + login.USER + " <br/>  <br/>");
         return desktop.getSession().getAttribute("USER").toString();
     }
+    
+       public void onClick$ItemCH(Event evt) {
+        rootPagina.setSrc("/Vistas/ReporteFacturas.zul");
+    }
 
 }

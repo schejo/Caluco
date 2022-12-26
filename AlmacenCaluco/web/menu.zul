@@ -52,7 +52,7 @@
                             <menu id="menuRPublic1" label="CATALOGOS" image= "bootstrap/img/casa.png">
                                 <menupopup>  
                                     <menuitem label="USUARIOS" id="ItemA" image= "bootstrap/img/casa.png"/> 
-                                   <!--  <menuitem label="PRODUCTOS" id="ItemAB" image= "bootstrap/img/casa.png"/>-->
+                                    <!--  <menuitem label="PRODUCTOS" id="ItemAB" image= "bootstrap/img/casa.png"/>-->
                                     <menuitem label="PRODUCTOS" id="ItemABN" image= "bootstrap/img/casa.png"/>
                                     <menuitem label="CLIENTES" id="ItemCli" image= "bootstrap/img/casa.png"/>
                                 </menupopup>
@@ -63,9 +63,9 @@
                                     <menuitem label="COMPRA DE  PRODUCTOS" id="ItemB" image="bootstrap/img/reporte1.png" /> 
                                     <menuitem label="VENTAS DE PRODUCTOS FEL" id="ItemBA" image="bootstrap/img/reporte1.png" /> 
                                     <menuitem label="VENTAS NORMALES" id="ItemBD" image="bootstrap/img/reporte1.png" /> 
-                                  <menuitem label="VENTAS CON VALES" id="ItemBDD" image="bootstrap/img/reporte1.png" />
-                                  <menuitem label="VENTAS SERVICIOS" id="ItemBV" image="bootstrap/img/reporte1.png" /> 
-                                 <!--   <menuitem label="VENTAS FACTURADAS - FEL" id="ItemBE" image="bootstrap/img/reporte1.png" /> --> 
+                                    <menuitem label="VENTAS CON VALES" id="ItemBDD" image="bootstrap/img/reporte1.png" />
+                                    <menuitem label="VENTAS SERVICIOS" id="ItemBV" image="bootstrap/img/reporte1.png" /> 
+                                    <!--   <menuitem label="VENTAS FACTURADAS - FEL" id="ItemBE" image="bootstrap/img/reporte1.png" /> --> 
                                     <menuitem label="BAJAS" id="ItemBB" image="bootstrap/img/reporte1.png" /> 
                                     <menuitem label="BUSCAR" id="ItemBC" image="bootstrap/img/reporte1.png" /> 
                                     <menuitem label="ACTUALIZA COMPRAS" id="ItemBF" image="bootstrap/img/reporte1.png" /> 
@@ -83,6 +83,8 @@
                                     <menuitem label="VENTAS DEL DIA" id="ItemCE" image="bootstrap/img/query.png"/>
                                     <menuitem label="REPORTE DE VENTAS EN EFECTIVO" id="ItemCF" image="bootstrap/img/query.png"/>
                                     <menuitem label="REPORTE DE STOCK MENOR DE 5 PRODUCTOS" id="ItemCG" image="bootstrap/img/query.png"/>
+                                    <menuitem label="REPORTE DE FACTURAS FEL" id="ItemCH" image="bootstrap/img/query.png"/>
+
                                 </menupopup>
                             </menu> 
                             

@@ -1,19 +1,12 @@
 package ctrl_;
 
-import Conexion.*;
-import DAL.CatalogoDal;
-import DAL.ClientesDal;
-import DAL.ProductosDal;
-import DAL.ProductosNuevoDal;
-import DAL.UsuarioDal;
 import DAL.VentasDal;
-import MD.CatalogosMd;
-import MD.ClientesMd;
 import MD.DetalleFacturaMd;
 import MD.FacturaMd;
-import MD.ProductosMd;
-import MD.ProductosNuevoMd;
-import MD.UsuariosMd;
+
+//import Util.Reportes;
+//import Util.Utilitarios;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
@@ -21,54 +14,17 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.Anchor;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chapter;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.ListItem;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Section;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.DottedLineSeparator;
-import com.itextpdf.text.Anchor;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chapter;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.ListItem;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.BarcodeQRCode;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.DottedLineSeparator;
-import Utilitarios.Util;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -90,507 +46,171 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-//import org.tempuri.ProcesosRemolcadores;
-//;     
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Composition;
+import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
-import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Filedownload;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Timebox;
-import Utilitarios.*;
-import java.io.FileOutputStream;
-import java.util.Calendar;
-import org.zkoss.util.media.AMedia;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.EventQueues;
-import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Window;
 
-public class VentasFelCtrl extends GenericForwardComposer {
+public class ReporteFacturasCtrl extends GenericForwardComposer {
 
-    List<ProductosNuevoMd> allProductos = new ArrayList<ProductosNuevoMd>();
-    ProductosNuevoDal ProductoDal = new ProductosNuevoDal();//lo copie de usuarios
-
+    private Intbox txtId;
+    private Textbox txtNombre;
+    private Textbox txtDireccion;
+    private Intbox txtTelefono;
+    private Textbox txtNit;
     private Button btnGuardar;
     private Button btnImprimir;
 
+    Div formulario;
+
     private static final long serialVersionUID = 1L;
-    ClientesDal clientebd = new ClientesDal();
 
-   // static List<DetalleFacturaMd> lista = new ArrayList<DetalleFacturaMd>();
-     List<CatalogosMd> lista = new ArrayList<CatalogosMd>();
-
-    ClientesDal cliente = new ClientesDal();
-
-    Session session = Sessions.getCurrent();
-
-    private Textbox txtEmpleadoId;
-    private Textbox txtEmpleadoNombre;
-    private Textbox txtEmpleadoUsuario;
-    private Textbox txtFacturaEstado;
-    private Combobox cbxFacturaTipoPago;
-    private Textbox txtFacturaFecha;
-    private Combobox cbxDetalleBusqueda;
-    private Combobox cbxFacturaSerie;
-       public void onClick$btnBusca1(Event e) {
-        EventQueues.lookup("myEventQueue", EventQueues.DESKTOP, true)
-                .publish(new Event("onChangeNickname", null, lista));
-
-        //INVOCAR MODAL
-        Window window = (Window) Executions.createComponents(
-                "/Vistas/BuscaPro.zul", null, null);
-        window.doModal();
-    }
-
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-    Util util = new Util();
-    ProductosDal pro = new ProductosDal();
-
-    List<ProductosMd> datosP = new ArrayList<ProductosMd>();
-     CatalogoDal ctd = new CatalogoDal();
-
-    UsuarioDal user = new UsuarioDal();
+//    Utilitarios util = new Utilitarios();
+    Session Session = Sessions.getCurrent();
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-//        session.setAttribute("EmpleadoId", "1");
-//        session.setAttribute("EmpleadoUsuario", "JGARCIA");
-//        session.setAttribute("EmpleadoNombre", "JOSE GARCIA");
-        lista = ctd.consulta();
-          EventQueues.lookup("myEventQueue", EventQueues.DESKTOP, true)
-                .subscribe(new EventListener() {
-                    public void onEvent(Event event) throws Exception {
-                        List<CatalogosMd> data = new ArrayList<CatalogosMd>();
-                        data.clear();
-                        data = (List<CatalogosMd>) event.getData();
-                        if (data.isEmpty()) {
-                            txtProductoId.setText("");
 
-                        } else {
-                            for (CatalogosMd item : data) {
-                                  if(data.size()==1){
-                                txtProductoId.setText(item.getCodemp());
-                                 txtProductoId.setFocus(true);
-                                }
-                            }
-                        }
-                    }
-                });
-
-        UsuariosMd mod = user.REGselectUsuario(desktop.getSession().getAttribute("USER").toString());
-
-        txtEmpleadoId.setText(mod.getCodigo());
-        txtEmpleadoNombre.setText(mod.getNombre());
-        txtEmpleadoUsuario.setText(desktop.getSession().getAttribute("USER").toString());
-        txtFacturaEstado.setText("INICIADO");
-        cbxFacturaTipoPago.setSelectedIndex(0);
-        cbxFacturaSerie.setSelectedIndex(0);
-        txtFacturaFecha.setText(String.valueOf(formatter.format(new Date())));
-
-        this.TotalesDoublebox(txtCredito, true);
-        this.TotalesDoublebox(txtEfectivo, true);
-        this.TotalesDoublebox(txtCambio, true);
-        this.TotalesDoublebox(txtTarjeta, true);
-        this.TotalesDoublebox(txtRecibido, false);
-        LimpiarPagos();
-
-        allProductos = ProductoDal.allCL();
-        cbxDetalleBusqueda.setModel(new ListModelList(allProductos));
-
-       
-    }
-
-    private Textbox txtClienteNit;
-    private Textbox txtClienteNombre;
-    private Textbox txtClienteId;
-    private Textbox txtClienteDireccion;
-    private Textbox txtClienteTelefono;
-    private Textbox txtClienteAlta;
-
-    public void onChange$txtRecibido(Event evt) {
-        Float Cambio = (Float.parseFloat(txtRecibido.getText()) - Float.parseFloat(txtEfectivo.getText()));
-        if (Float.parseFloat(txtRecibido.getText()) >= Float.parseFloat(txtEfectivo.getText())) {
-            txtCambio.setText(Cambio.toString());
-        } else {
-            Messagebox.show("NO PUEDE INGRESAR UNA CANTIDAD MENOR AL TOTAL DE EFECTIVO A RECIBIR", "Informacion", Messagebox.OK, Messagebox.ERROR);
-        }
+        LlenarGrid();
 
     }
-
-    public void onChange$txtClienteNit(Event evt) throws SQLException, SAXException, IOException, ParserConfigurationException {
-        ClientesMd cl = cliente.BuscarClientes(txtClienteNit.getText());
-
-        if (cl != null) {
-            txtClienteNombre.setText(cl.getNombreComercial());
-            txtClienteId.setText(cl.getCodigoCliente());
-            txtClienteDireccion.setText(cl.getDireccion());
-            txtClienteTelefono.setText(cl.getTelefono());
-            txtClienteAlta.setText(cl.getFechaAlta());
-        } else {
-            limpiarCliente();
-            Messagebox.show("NO EXISTE EL CLIENTE INGRESADO, INTENTE DE NUEVO O ", "Informacion", Messagebox.OK, Messagebox.ERROR);
-        }
-
-    }
-
-    private void limpiarCliente() {
-        txtClienteNombre.setText("");
-        txtClienteId.setText("");
-        txtClienteDireccion.setText("");
-        txtClienteTelefono.setText("");
-        txtClienteAlta.setText("");
-    }
-
-    private Textbox txtProductoId;
-    private Textbox txtProductoTipo;
-    private Textbox txtProductoDescripcion;
-    private Textbox txtProductoPrecio;
-    private Textbox txtProductoDescuento;
-    private Textbox txtProductoStock;
-    private Intbox txtProductoCantidad;
-    private Button btnDetalleAgregar;
-//
-//    public void onChange$cbxDetalleBusqueda(Event evt) throws SQLException {
-//
-//    //            util.cargaComboxLista(datosP, cbxDetalleBusqueda);
-//        
-//    }
-    
-       public void onOK$txtProductoId(Event evt) throws SQLException {
-         onChange$txtProductoId(evt);
-     }
-
-    //para mostrar el producto ingresando el codigo
-    public void BuscaItem(String letra, Combobox cb) {
-        for (int i = 0; i < cb.getItemCount(); i++) {
-            if (letra.equals(cb.getItemAtIndex(i).getValue().toString())) {
-                cb.setSelectedIndex(i);
-                break;
-            }
-        }
-    }
-
-    public void onChange$txtProductoId(Event evt) throws SQLException {
-        ProductosDal pro = new ProductosDal();
-        ProductosMd proMd = pro.BuscarProducto(txtProductoId.getText());
-
-        if (proMd != null) {
-            this.BuscaItem(txtProductoId.getText(), cbxDetalleBusqueda);
-
-            txtProductoId.setText(proMd.getCodigo());
-            txtProductoTipo.setText(proMd.getTipo_servicio());
-            txtProductoDescripcion.setText(proMd.getDescripcion());
-            txtProductoPrecio.setText(proMd.getPrecio_venta());
-            txtProductoDescuento.setText(proMd.getDescuento());
-            txtProductoStock.setText(proMd.getStock());
-        }else{
-               Messagebox.show("NO EXISTE PRODUCTO CON EL CODIGO INGRESADO", "Informacion", Messagebox.OK, Messagebox.ERROR);
-        }
-
-    }
-
-    public void onSelect$cbxDetalleBusqueda(Event evt) throws SQLException {
-        ProductosDal pro = new ProductosDal();
-        ProductosMd proMd = pro.BuscarProducto(cbxDetalleBusqueda.getSelectedItem().getValue().toString());
-
-        txtProductoId.setText(proMd.getCodigo());
-        txtProductoTipo.setText(proMd.getTipo_servicio());
-        txtProductoDescripcion.setText(proMd.getDescripcion());
-        txtProductoPrecio.setText(proMd.getPrecio_venta());
-        txtProductoDescuento.setText(proMd.getDescuento());
-        txtProductoStock.setText(proMd.getStock());
-
-        //cbxDetalleBusqueda.getItems().clear();
-    }
-
-    private void LimpiarProducto() {
-        cbxDetalleBusqueda.setText("");
-        txtProductoId.setText("");
-        txtProductoTipo.setText("");
-        txtProductoDescripcion.setText("");
-        txtProductoPrecio.setText("");
-        txtProductoDescuento.setText("");
-        txtProductoStock.setText("");
-        txtProductoCantidad.setText("");
-
-    }
-
-    private Grid dataGrid;
+  
     private Rows rows;
     private Row row;
-
+    public List<FacturaMd> datos;
     private int banderaGrid = 0;
-
-    public List<DetalleFacturaMd> datos = new ArrayList<DetalleFacturaMd>();
-    DecimalFormat formato = new DecimalFormat("#.00");
-
-///aqui encontre la opcion de generar de aca para abajo tiene que estar la opcion de desabilitar el campo de tarjeta
-    public void onClick$btnDetalleAgregar(Event evt) throws SQLException, ParseException {
-        if (!txtProductoId.getText().equals("")) {
-            if (txtProductoCantidad.getValue() != null) {
-                if (txtProductoCantidad.getValue() != 0) {
-                    if (txtProductoCantidad.getValue() > 0) {
-                        if (Integer.parseInt(txtProductoCantidad.getText()) <= Integer.parseInt(txtProductoStock.getText())) {
-                            if (!ProductoAgregado(txtProductoId.getText())) {
-                                DetalleFacturaMd detMod = new DetalleFacturaMd();
-
-//
-                                detMod.setDetProductoId(txtProductoId.getText());
-                                detMod.setDetProductoDescripcion(txtProductoDescripcion.getText());
-                                detMod.setProductoCantidad(String.valueOf(txtProductoCantidad.getValue()));
-                                detMod.setDetProductoPrecioVenta(txtProductoPrecio.getText());
-                                detMod.setProductoDescuento(txtProductoDescuento.getText());
-
-                                Float PrecioReal = (Float.parseFloat(txtProductoPrecio.getText()) - Float.parseFloat(txtProductoDescuento.getText()));
-                                Float SubtotalDetalle = PrecioReal * Float.parseFloat(String.valueOf(txtProductoCantidad.getValue()));
-                                detMod.setSubtotal(String.valueOf(formato.format(SubtotalDetalle)));
-                                detMod.setDetProductoTipo(txtProductoTipo.getText());
-                                detMod.setProductoStock(txtProductoStock.getText());
-                                datos.add(detMod);
-                                LimpiarProducto();
-                            } else {
-                                Messagebox.show("EL PRODUCTO YA FUE AGREGADO A LA FACTURA", "Informacion", Messagebox.OK, Messagebox.ERROR);
-                            }
-                        } else {
-                            Messagebox.show("LA EXISTENCIA ES MENOR A LA CANTIDAD INGRESADA", "Informacion", Messagebox.OK, Messagebox.ERROR);
-                        }
-                    } else {
-                        Messagebox.show("NO DEBE INGRESAR UNA CANTIDAD NEGATIVA", "Informacion", Messagebox.OK, Messagebox.ERROR);
-                    }
-                } else {
-                    Messagebox.show("DEBE AGREGAR UNA CANTIDAD DIFERENTE DE 0", "Informacion", Messagebox.OK, Messagebox.ERROR);
-                }
-            } else {
-                Messagebox.show("DEBE AGREGAR LA CANTIDAD DE PRODUCTO QUE DESEA ADQUIRIR", "Informacion", Messagebox.OK, Messagebox.ERROR);
-            }
-        } else {
-            Messagebox.show("DEBE SELECCIONAR UN PRODUCTO PARA AGREGARLO", "Informacion", Messagebox.OK, Messagebox.ERROR);
-        }
-        ActualizaTotales();
-        LlenarGrid();
-    }
-
-    private Textbox txtReferencia;
-    private Doublebox txtEfectivo;
-    private Doublebox txtTarjeta;
-    private Doublebox txtCredito;
-    private Doublebox txtCambio;
-    private Doublebox txtRecibido;
-
-    public void onSelect$cbxFacturaTipoPago(Event evt) {
-        String TipoPago = cbxFacturaTipoPago.getSelectedItem().getValue().toString();
-
-        if (datos.size() > 0) {
-
-            if (TipoPago.equals("E")) {
-                txtEfectivo.setReadonly(true);
-                txtRecibido.setReadonly(false);
-                txtTarjeta.setReadonly(true);
-                txtCredito.setReadonly(true);
-                txtReferencia.setReadonly(true);
-            }
-
-            if (TipoPago.equals("T")) {
-                txtEfectivo.setReadonly(true);
-                txtRecibido.setReadonly(true);
-                txtTarjeta.setReadonly(true);
-                txtCredito.setReadonly(true);
-                txtReferencia.setReadonly(false);
-            }
-
-            if (TipoPago.equals("C")) {
-                txtEfectivo.setReadonly(true);
-                txtRecibido.setReadonly(true);
-                txtTarjeta.setReadonly(true);
-                txtCredito.setReadonly(true);
-                txtReferencia.setReadonly(true);
-            }
-        }
-        LimpiarPagos();
-
-        ActualizaTotales();
-    }
-
-    private void LimpiarPagos() {
-        txtEfectivo.setText("0.00");
-        txtTarjeta.setText("0.00");
-        txtReferencia.setText("");
-        txtCredito.setText("0.00");
-        txtRecibido.setText("");
-        txtCambio.setText("");
-    }
-
     VentasDal ven = new VentasDal();
 
-    public void onClick$btnGuardar(Event evt) throws SQLException, ParseException {
+    public void LlenarGrid() throws SQLException, ParseException, ClassNotFoundException {
 
-        FacturaMd enc = new FacturaMd();
-
-        enc.setFacturaClienteId(txtClienteId.getText());
-        enc.setFacturaClienteNombre(txtClienteNombre.getText());
-        enc.setFacturaClienteDireccion(txtClienteDireccion.getText());
-        enc.setFacturaClienteNit(txtClienteNit.getText());
-        enc.setFacturaEmpleadoId(txtEmpleadoId.getText());
-        enc.setFacturaEstado("E");
-
-        enc.setFacturaSubtotal(txtSubtotal.getText());
-        enc.setFacturaTotal(txtTotal.getText());
-        enc.setFacturaDescuento(txtDescuentos.getText());
-        enc.setFacturaUsuarioEmite(txtEmpleadoUsuario.getText());
-
-        enc.setFacturaSerie(cbxFacturaSerie.getText());
-        enc.setFacturaTipoPago(cbxFacturaTipoPago.getSelectedItem().getValue().toString());
-        enc.setFacturaReferenciaTarjeta(this.txtReferencia.getText());
-        enc.setFacturaPagoEfectivo(this.txtEfectivo.getText());
-        enc.setFacturaPagoTarjeta(this.txtTarjeta.getText());
-        enc.setFacturaEfectivoRecibido(this.txtRecibido.getText());
-        enc.setFacturaCredito(this.txtCredito.getText());
-        enc.setFacturaCambio(this.txtCambio.getText());
-
-        enc.setFacturaAutorizacion("1D552B99-B610-4916-A1B5-A3CF8001BD7F");
-        enc.setFacturaNumeroD("123456789");
-        enc.setFacturaSerieDTE("1D552B99");
-        enc.setFacturaFechaCertificacion("2021-05-01 14:00:00");
-        enc.setFacturaNitCertificador("50510231");
-        enc.setFacturaNombreCertificador("MEGAPRINT S.A.");
-
-        if (ven.Crear(enc, datos) > 0) {
-            Clients.showNotification("FACTURA CREADA <br/> EXITOSAMENTE <br/>");
-            PDF(ven.BuscarEncabezadoFactura(cbxFacturaSerie.getText(), ""));
-        } else {
-            Messagebox.show("NO SE CREO FACTURA", "Informacion", Messagebox.OK, Messagebox.ERROR);
-        }
-
-    }
-
-    private boolean ProductoAgregado(String ProductoId) {
-        boolean resp = false;
-
-        for (int i = 0; i < datos.size(); i++) {
-            if (ProductoId.equals(datos.get(i).getDetProductoId())) {
-                resp = true;
-                break;
-            }
-        }
-        return resp;
-    }
-
-    private Textbox txtSubtotal;
-    private Textbox txtDescuentos;
-    private Textbox txtTotal;
-
-    public void ActualizaTotales() {
-
-        subtotal = Float.parseFloat("0.00");
-        descuentos = Float.parseFloat("0.00");
-
-        for (int i = 0; i < datos.size(); i++) {
-            subtotal += Float.parseFloat(datos.get(i).getDetProductoPrecioVenta()) * Float.parseFloat(datos.get(i).getProductoCantidad());
-            descuentos += Float.parseFloat(datos.get(i).getProductoDescuento()) * Float.parseFloat(datos.get(i).getProductoCantidad());
-        }
-
-        total = (subtotal - descuentos);
-
-        txtSubtotal.setText(String.valueOf(formato.format(subtotal)));
-        txtDescuentos.setText(String.valueOf(formato.format(descuentos)));
-        txtTotal.setText(String.valueOf(formato.format(total)));
-
-        if (cbxFacturaTipoPago.getSelectedItem().getValue().toString().equals("E")) {
-            txtEfectivo.setText(String.valueOf(formato.format(total)));
-        }
-
-        if (cbxFacturaTipoPago.getSelectedItem().getValue().toString().equals("T")) {
-            txtTarjeta.setText(String.valueOf(formato.format(total)));
-        }
-
-        if (cbxFacturaTipoPago.getSelectedItem().getValue().toString().equals("C")) {
-            txtCredito.setText(String.valueOf(formato.format(total)));
-        }
-    }
-
-    public void LlenarGrid() throws ParseException {
-
+        datos = ven.buscaGrid();
         if (banderaGrid == 1) {
             row.getChildren().clear();
             rows.getChildren().clear();
             banderaGrid = 0;
         }
-        int i = 1;
-        for (DetalleFacturaMd mov : datos) {
+
+        for (FacturaMd mov : datos) {
             banderaGrid = 1;
-            Label No = new Label();
-            ValoresLabel(No, String.valueOf(i), "");
-            Label Codigo = new Label();
-            ValoresLabel(Codigo, mov.getDetProductoId(), "");
-            Label Descripcion = new Label();
-            ValoresLabel(Descripcion, mov.getDetProductoDescripcion(), "");
-            Label Stock = new Label();
-            ValoresLabel(Stock, mov.getProductoStock(), "");
-            Intbox Cantidad = new Intbox();
-            ValoresIntbox(Cantidad, mov.getProductoCantidad(), "", false);
-            Label PrecioUnidad = new Label();
-            ValoresLabel(PrecioUnidad, mov.getDetProductoPrecioVenta(), "");
-            Doublebox Descuento = new Doublebox();
-            ValoresDoublebox(Descuento, mov.getProductoDescuento(), "", false);
-            Label Subtotal = new Label();
-            ValoresLabel(Subtotal, mov.getSubtotal(), "");
+            Label Autorizacion = new Label();
+            ValoresLabel(Autorizacion, mov.getFacturaAutorizacion(), "");
+            Label Cliente = new Label();
+            ValoresLabel(Cliente, mov.getFacturaClienteNombre(), "");
+            
+SimpleDateFormat formatoE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatoS = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            
+
+            String fecha = formatoS.format(formatoE.parse(mov.getFacturaFechaEmision()));
+
+            Label Fecha = new Label();
+            ValoresLabel(Fecha, fecha, "");
+            Label Total = new Label();
+            ValoresLabel(Total, mov.getFacturaTotal(), "");
+            Label Estado = new Label();
+            ValoresLabel(Estado, Estado(mov.getFacturaEstado()), "");
+            Label TipoPago = new Label();
+            ValoresLabel(TipoPago, TipoPago(mov.getFacturaTipoPago()), "");
 
             Div acciones = new Div();
             acciones.setClass("text-center");
 
-            Button Eliminar = new Button();
-            CreateButton(Eliminar, "btn btn-primary btn-md", "z-icon-print", "margin-left:3px;", "", true);
-            acciones.appendChild(Eliminar);
+            Button Reimprimir = new Button();
+            CreateButton(Reimprimir, "btn btn-primary btn-md", "z-icon-print", "margin-left:3px;", "", true);
+            acciones.appendChild(Reimprimir);
+
+            Button Anular = new Button();
+            if (!mov.getFacturaEstado().equals("A")) {
+
+                CreateButton(Anular, "btn btn-primary btn-md", "z-icon-trash-o", "margin-left:3px;", "", true);
+                acciones.appendChild(Anular);
+            }
 
             row = new Row();
             row.setStyle("border-style:solid;border-width:1px");
-            row.appendChild(No);
-            row.appendChild(Codigo);
-            row.appendChild(Descripcion);
-            row.appendChild(Stock);
-            row.appendChild(Cantidad);
-            row.appendChild(PrecioUnidad);
-            row.appendChild(Descuento);
-            row.appendChild(Subtotal);
+            row.appendChild(Autorizacion);
+            row.appendChild(Cliente);
+            row.appendChild(Fecha);
+            row.appendChild(Total);
+            row.appendChild(Estado);
+            row.appendChild(TipoPago);
+
             row.appendChild(acciones);
 
             row.setParent(rows);
             row.setValue(mov);
-            Eliminar.addEventListener("onClick", EliminarProducto);
-            Cantidad.addEventListener("onChange", ModificarCantidad);
-            Descuento.addEventListener("onChange", ModificarDescuento);
-            i++;
+
+            Reimprimir.addEventListener("onClick", reimprimir);
+            Anular.addEventListener("onClick", anular);
         }
     }
 
-    Float subtotal = Float.parseFloat("0.0"), descuentos = Float.parseFloat("0.0"), total = Float.parseFloat("0.0");
+    private String TipoPago(String tipo) {
+        String resp = "";
 
-    EventListener EliminarProducto = new EventListener<Event>() {
+        switch (tipo) {
+            case "E":
+                resp = "EFECTIVO";
+                break;
+            case "T":
+                resp = "TARJETA";
+                break;
+            case "M":
+                resp = "MULTIPLE";
+                break;
+        }
+        return resp;
+    }
+
+    private String Estado(String estado) {
+        String resp = "";
+
+        switch (estado) {
+            case "E":
+                resp = "EMITIDA";
+                break;
+            case "A":
+                resp = "ANULADA";
+                break;
+
+        }
+        return resp;
+    }
+
+    EventListener reimprimir = new EventListener<Event>() {
         @Override
-        public void onEvent(Event event) throws SQLException, IOException, ParseException {
-            DetalleFacturaMd modelo = new DetalleFacturaMd();
+        public void onEvent(Event event) throws SQLException, IOException, DocumentException, ParseException {
+            FacturaMd modelo = new FacturaMd();
 
             Button button = (Button) event.getTarget();
             Div div = (Div) button.getParent();
@@ -598,126 +218,80 @@ public class VentasFelCtrl extends GenericForwardComposer {
 
             modelo = row.getValue();
 
-            for (int i = 0; i < datos.size(); i++) {
-                if (modelo.getDetProductoId().equals(datos.get(i).getDetProductoId())) {
-                    datos.remove(i);
-                }
-            }
-            ActualizaTotales();
-
-            LlenarGrid();
+            PDF(ven.BuscarEncabezadoFactura("", modelo.getFacturaAutorizacion()));
         }
     };
 
-    EventListener ModificarCantidad = new EventListener<Event>() {
+    EventListener anular = new EventListener<Event>() {
         @Override
-        public void onEvent(Event event) throws SQLException, IOException, ParseException {
-            DetalleFacturaMd modelo = new DetalleFacturaMd();
+        public void onEvent(Event event) throws SQLException, IOException, DocumentException, ParseException, ClassNotFoundException, InterruptedException {
+            FacturaMd modelo = new FacturaMd();
 
-            Intbox text = (Intbox) event.getTarget();
-            Row row = (Row) text.getParent();
+            Button button = (Button) event.getTarget();
+            Div div = (Div) button.getParent();
+            Row row = (Row) div.getParent();
 
             modelo = row.getValue();
 
-            if (text.getValue() != null) {
-                if (text.getValue() != 0) {
-                    if (text.getValue() > 0) {
-                        if (Integer.parseInt(text.getText()) <= Integer.parseInt(modelo.getProductoStock())) {
-                            for (int i = 0; i < datos.size(); i++) {
-                                if (modelo.getDetProductoId().equals(datos.get(i).getDetProductoId())) {
-                                    datos.get(i).setProductoCantidad(text.getValue().toString());
-                                    Float PrecioReal = (Float.parseFloat(datos.get(i).getDetProductoPrecioVenta()) - Float.parseFloat(datos.get(i).getProductoDescuento()));
-                                    Float SubtotalDetalle = PrecioReal * Float.parseFloat(String.valueOf(datos.get(i).getProductoCantidad()));
+            session.setAttribute("AUTORIZACION", modelo.getFacturaAutorizacion());
+            session.setAttribute("CLIENTE", modelo.getFacturaClienteNombre());
+            session.setAttribute("EMISION", modelo.getFacturaFechaEmision());
 
-                                    datos.get(i).setSubtotal(String.valueOf(formato.format(SubtotalDetalle)));
-                                }
-                            }
+            // ven.Anular(modelo.getFacturaAutorizacion(), "PRUEBAS");
+            showPopup(new EventListener<Event>() {
+                @Override
+                public void onEvent(final Event event) throws Exception {
+                    LlenarGrid();
 
-                        } else {
-                            Messagebox.show("LA EXISTENCIA ES MENOR A LA CANTIDAD INGRESADA", "Informacion", Messagebox.OK, Messagebox.ERROR);
-                        }
-                    } else {
-                        Messagebox.show("NO DEBE INGRESAR UNA CANTIDAD NEGATIVA", "Informacion", Messagebox.OK, Messagebox.ERROR);
-                    }
-                } else {
-                    Messagebox.show("DEBE AGREGAR UNA CANTIDAD DIFERENTE DE 0", "Informacion", Messagebox.OK, Messagebox.ERROR);
+                    //Messagebox.show("FACTURA ANULADA CORRECTAMENTE");
                 }
-            } else {
-                Messagebox.show("DEBE AGREGAR LA CANTIDAD DE PRODUCTO QUE DESEA ADQUIRIR", "Informacion", Messagebox.OK, Messagebox.ERROR);
-            }
-
-            ActualizaTotales();
-            LlenarGrid();
+            });
 
         }
     };
 
-    EventListener ModificarDescuento = new EventListener<Event>() {
-        @Override
-        public void onEvent(Event event) throws SQLException, IOException, ParseException {
-            DetalleFacturaMd modelo = new DetalleFacturaMd();
+    public static void showPopup(final EventListener<Event> eventListener)
+            throws InterruptedException {
+        //you can give more params with the method to add them as arguments.
+        final Map<String, Object> args = new HashMap<String, Object>();
+        args.put("modus", "modal");
+        openModal("/Vistas/AnulacionFacturas.zul", null, args, eventListener);
+    }
 
-            Doublebox text = (Doublebox) event.getTarget();
-            Row row = (Row) text.getParent();
-
-            modelo = row.getValue();
-
-            if (text.getValue() != null) {
-                if (text.getValue() >= 0) {
-                    if (Float.parseFloat(text.getText()) <= Float.parseFloat(modelo.getDetProductoPrecioVenta())) {
-                        for (int i = 0; i < datos.size(); i++) {
-                            if (modelo.getDetProductoId().equals(datos.get(i).getDetProductoId())) {
-                                datos.get(i).setProductoDescuento(text.getText());
-                                Float PrecioReal = (Float.parseFloat(datos.get(i).getDetProductoPrecioVenta()) - Float.parseFloat(datos.get(i).getProductoDescuento()));
-                                Float SubtotalDetalle = PrecioReal * Float.parseFloat(String.valueOf(datos.get(i).getProductoCantidad()));
-
-                                datos.get(i).setSubtotal(String.valueOf(formato.format(SubtotalDetalle)));
-                            }
-                        }
-
-                    } else {
-                        Messagebox.show("EL DESCUENTO ES MAYOR AL PRECIO DEL PRODUCTO", "Informacion", Messagebox.OK, Messagebox.ERROR);
-                    }
-                } else {
-                    Messagebox.show("NO DEBE INGRESAR UNA CANTIDAD NEGATIVA", "Informacion", Messagebox.OK, Messagebox.ERROR);
-                }
-
-            } else {
-                Messagebox.show("DEBE AGREGAR LA CANTIDAD DE PRODUCTO QUE DESEA ADQUIRIR", "Informacion", Messagebox.OK, Messagebox.ERROR);
-            }
-
-            ActualizaTotales();
-            LlenarGrid();
-
+    public static void openModal(final String page, final Component parent,
+            final Map<String, Object> obMap,
+            final EventListener<Event> onCloseListener)
+            throws InterruptedException {
+        for (final Map.Entry<String, Object> entry : obMap.entrySet()) {
+            Executions.getCurrent().setAttribute(entry.getKey(),
+                    entry.getValue());
         }
-    };
+        Executions.getCurrent().setAttribute(Composition.PARENT, null);
+        final Component createComponents = Executions.createComponents(page,
+                parent, obMap);
+        Component parent1 = createComponents;
+        parent1 = getWindow(parent1);
+        if (parent1 instanceof Window) {
+            final Window window = (Window) parent1;
+            if (onCloseListener != null) {
+                //attach the listener so when popup is closed the listener is called.
+                window.addEventListener(Events.ON_CLOSE, onCloseListener);
+                window.addEventListener(Events.ON_CANCEL, onCloseListener);
+            }
+            window.doModal();
+        }
+    }
+
+    public static Component getWindow(Component comp) {
+        if (comp != null && !(comp instanceof Window)) {
+            return getWindow(comp.getParent());
+        }
+        return comp;
+    }
 
     public void ValoresLabel(Label label, String valor, String clase) {
         label.setValue(valor);
         label.setClass(clase);
-    }
-
-    public void ValoresIntbox(Intbox text, String valor, String clase, boolean read) {
-        text.setValue(Integer.parseInt(valor));
-        text.setReadonly(read);
-        text.setWidth("100%");
-        text.setClass(clase);
-    }
-
-    public void TotalesDoublebox(Doublebox text, boolean read) {
-        text.setReadonly(read);
-        text.setFormat("###0.##");
-        text.setLocale(Locale.US);
-
-    }
-
-    public void ValoresDoublebox(Doublebox text, String valor, String clase, boolean read) {
-        text.setValue(Float.parseFloat(valor));
-        text.setReadonly(read);
-        text.setFormat("###0.##");
-        text.setLocale(Locale.US);
-        text.setWidth("100%");
-        text.setClass(clase);
     }
 
     public void CreateButton(Button button, String clase, String icon, String style, String label, boolean visible) {
@@ -727,49 +301,15 @@ public class VentasFelCtrl extends GenericForwardComposer {
         button.setVisible(visible);
         button.setLabel(label);
     }
-    public void onClick$btnLimpiar(Event e) {
-        Limpiartodo();
 
-    }
-    
-      private void Limpiartodo() {
-        cbxDetalleBusqueda.setText("");
-        txtProductoId.setText("");
-        txtProductoTipo.setText("");
-        txtProductoDescripcion.setText("");
-        txtProductoPrecio.setText("");
-        txtProductoDescuento.setText("");
-        txtProductoStock.setText("");
-        txtProductoCantidad.setText("");
-        txtClienteNit.setText("");
-
-        txtClienteNit.setText("");
-        txtClienteNombre.setText("");
-        txtClienteId.setText("");
-        txtClienteDireccion.setText("");
-        txtClienteTelefono.setText("");
-        txtClienteAlta.setText("");
-
-        txtSubtotal.setText("");
-        txtDescuentos.setText("");
-        txtTotal.setText("");
-
-        txtReferencia.setText("");
-        txtEfectivo.setText("");
-        txtTarjeta.setText("");
-
-        txtCredito.setText("");
-        txtCambio.setText("");
-        txtRecibido.setText("");
-
-        rows.getChildren().clear();
-
-        datos.removeAll(datos);
-    }
-
+//    public void onClick$btnImprimir(Event evt) throws SQLException, DocumentException {
+//        Reportes rep = new Reportes();
+//        
+//        rep.ExtraccionBoletas("0");
+//    }
     File f;
 
-    public void PDF(FacturaMd enc/*, java.util.List<DetalleFacturaMd> lista*/) throws SQLException {
+public void PDF(FacturaMd enc/*, java.util.List<DetalleFacturaMd> lista*/) throws SQLException {
         //  String ano_arribo="", num_Arribo="";
 
         String buque = "";
@@ -906,7 +446,7 @@ public class VentasFelCtrl extends GenericForwardComposer {
             cell2.setBorder(Rectangle.NO_BORDER);
             table2.addCell(cell2);
 
-            cell2 = new PdfPCell(new Phrase("CLIENTE: " + enc.getFacturaClienteId() + "  " + txtClienteNombre.getText(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 10, Font.BOLD)));
+            cell2 = new PdfPCell(new Phrase("CLIENTE: " + enc.getFacturaClienteId() + "  " + enc.getFacturaClienteNombre(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 10, Font.BOLD)));
             cell2.setColspan(10);
             cell2.setBorder(Rectangle.NO_BORDER);
             table2.addCell(cell2);
@@ -1267,13 +807,3 @@ public class VentasFelCtrl extends GenericForwardComposer {
         }
     }
 }
-
-//    String Codigo_Respuesta;
-//    String Descripcion_Respuesta;
-//
-//    ClientesMd clientes = null;
-//
-//    Session ses = Sessions.getCurrent();
-//    String[] resp;
-//    Window ventana;
-

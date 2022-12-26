@@ -42,9 +42,9 @@ public class VentasDal {
         try {
             String Xml2 = "{\n"
                     + "'Emision':{\n"
-                    + " 'Id_Emisor':'3',\n"
+                    + " 'Id_Emisor':'2',\n"
                     + " 'Id_Sucursal':'1',\n"
-                    + " 'Ambiente':'2'\n"
+                    + " 'Ambiente':'1'\n"
                     + "},\n"
                     + "'Anulacion':{\n"
                     + " 'Autorizacion':'" + modelo.getFacturaAutorizacion() + "',\n"
@@ -135,12 +135,12 @@ public class VentasDal {
 
                 String Xml2 = "{\n"
                         + "'Emision':{\n"
-                        + " 'Id_Emisor':'3',\n"
+                        + " 'Id_Emisor':'2',\n"
                         + " 'Id_Sucursal':'1',\n"
                         + " 'Tipo_Documento':'FACT',\n"
                         + " 'Fecha_Emision':'" + dtf.format(Calendar.getInstance().getTime()) + "',\n"
                         + " 'Hora_Emision':'" + dth.format(Calendar.getInstance().getTime()) + "',\n"
-                        + " 'Ambiente':'2'\n"
+                        + " 'Ambiente':'1'\n"
                         + "},\n"
                         + "'Receptor':{\n"
                         + " 'Nit_Receptor':'" + modelo.getFacturaClienteNit() + "',\n"
@@ -152,7 +152,7 @@ public class VentasDal {
                 int total = detalles.size() + 2;
 
                 String sql = "insert into Caluco.prefactura values ((SELECT IFNULL(MAX(prefac_id), 0)+1 FROM Caluco.prefactura u),"
-                        + "?,?,?,?,?,?,now(),?,null,null,?)";
+                        + "?,?,?,?,?,?,now(),?,null,null)";
                 conn.setAutoCommit(false);
                 smt = conn.prepareStatement(sql);
                 smt.setString(1, modelo.getFacturaClienteId());
@@ -162,7 +162,7 @@ public class VentasDal {
                 smt.setString(5, modelo.getFacturaTotal());
                 smt.setString(6, modelo.getFacturaDescuento());
                 smt.setString(7, modelo.getFacturaUsuarioEmite().toUpperCase());
-                smt.setString(8, session.getAttribute("SUCURSAL").toString());
+              //  smt.setString(8, "1");
 
                 result += smt.executeUpdate();
                 smt.close();
@@ -227,7 +227,7 @@ public class VentasDal {
                             + "'" + modelo.getFacturaFechaCertificacion() + "',?,null," + (!modelo.getFacturaPagoEfectivo().equals("") ? modelo.getFacturaPagoEfectivo() : "0") + "," + (!modelo.getFacturaPagoTarjeta().equals("") ? modelo.getFacturaPagoTarjeta() : "0") + ","
                             + "'" + (!modelo.getFacturaReferenciaTarjeta().equals("") ? modelo.getFacturaReferenciaTarjeta() : "N/A") + "'," + (!modelo.getFacturaCredito().equals("") ? modelo.getFacturaCredito() : "0") + ","
                             + "?,?,?,?,?,?,"
-                            + (!modelo.getFacturaCambio().equals("") ? modelo.getFacturaCambio() : "0") + "," + (!modelo.getFacturaEfectivoRecibido().equals("") ? modelo.getFacturaEfectivoRecibido() : "0") + ",?)";
+                            + (!modelo.getFacturaCambio().equals("") ? modelo.getFacturaCambio() : "0") + "," + (!modelo.getFacturaEfectivoRecibido().equals("") ? modelo.getFacturaEfectivoRecibido() : "0") + ")";
                     conn.setAutoCommit(false);
                     smt = conn.prepareStatement(sql);
                     smt.setString(1, modelo.getFacturaSerie());
@@ -240,7 +240,7 @@ public class VentasDal {
                     smt.setString(8, modelo.getFacturaFechaCertificacion());
                     smt.setString(9, modelo.getFacturaNitCertificador());
                     smt.setString(10, modelo.getFacturaNombreCertificador());
-                    smt.setString(11, session.getAttribute("SUCURSAL").toString());
+                    //smt.setString(11, session.getAttribute("SUCURSAL").toString());
 
                     result += smt.executeUpdate();
                     smt.close();
@@ -378,7 +378,7 @@ public class VentasDal {
         List<FacturaMd> allVentas = new ArrayList<FacturaMd>();
         String query = "select a.fac_autorizacion, a.fac_fecha_alta, a.fac_usuario_alta ,a.fac_total,a.fac_estado,a.fac_tipo_pago,\n"
                 + "       c.cl_nombre, c.cl_nit\n"
-                + "from almacen.factura a, almacen.prefactura p, almacen.cliente c\n"
+                + "from Caluco.factura a, Caluco.prefactura p, Caluco.cliente c\n"
                 + "where a.fac_pre_numero = p.prefac_id and p.prefac_cl_id = c.CL_ID and fac_nombre_certificador !='VALE'";
 
         try {

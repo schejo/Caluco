@@ -82,7 +82,7 @@ public class Util {
 
           co.setValue(item.getValue().toString());
     }
- public String ip4 = "localhost", ip = "45.55.47.25";
+ public String ip = "localhost", ip4 = "67.205.143.90";
 
     public String EnvioFactura(int ambiente, String Xml, String Funcion) {
         String tokenRecibido = ApiToken(ambiente);
@@ -113,8 +113,9 @@ public class Util {
 
     }
 
-    public String ApiToken(int ambiente) {
-        String Direccion = "", Xml = "{\"Usuario\": \"FELBD\", \"Clave\": \"SmVkaS0xMTQ5NjA=\"}";
+    
+    public String ApiToken(int ambientes) {
+        String Direccion = "", Xml = "{\"Usuario\": \"FELBD\", \"Clave\": \"AVNS_rNNIHPjHvs6wJR1yuyh\"}";
 
         Direccion = "http://" + ip + ":8080/FEL/api/Token";
 
